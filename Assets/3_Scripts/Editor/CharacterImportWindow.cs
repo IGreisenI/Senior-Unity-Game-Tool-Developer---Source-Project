@@ -3,6 +3,8 @@ using UnityEditor;
 
 public class CharacterImportWindow : EditorWindow
 {
+    private StoreItem storeItem;
+
     private string characterName;
     private int characterPrice;
     private GameObject characterModel;
