@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using System.IO;
 
 public class CharacterImportWindow : EditorWindow
 {
@@ -36,6 +33,7 @@ public class CharacterImportWindow : EditorWindow
 
     private void ImportCharacter()
     {
+        ImportFBXField.ImportFBXModel();
         ImportSpriteFromPNGField.ImportAsSprite();
     }
 }

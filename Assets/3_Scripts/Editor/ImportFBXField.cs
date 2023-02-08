@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 public class ImportFBXField
 {
@@ -21,5 +22,10 @@ public class ImportFBXField
 
     public static void ImportFBXModel()
     {
+        if (!string.IsNullOrEmpty(path))
+        {
+            FileUtil.CopyFileOrDirectory(path, $"Assets/1_Graphics/Models/{Path.GetFileName(path)}");
+            AssetDatabase.Refresh();
+        }
     }
 }
