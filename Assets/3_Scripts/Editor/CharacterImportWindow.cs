@@ -20,8 +20,8 @@ public class CharacterImportWindow : EditorWindow
     {
         characterName = EditorGUILayout.TextField("Character Name", characterName);
         characterPrice = EditorGUILayout.IntField("Character Speed", characterPrice);
-        characterModel = (GameObject)EditorGUILayout.ObjectField("Character Model", characterModel, typeof(GameObject), false);
-        characterSprite = (Sprite)EditorGUILayout.ObjectField("Character Sprite", characterSprite, typeof(Sprite), false);
+        ImportFBXField.DrawUI("Character Model");
+        ImportSpriteField.DrawUI("Character Sprite");
     }
 
     private void OnGUI()
@@ -38,4 +38,46 @@ public class CharacterImportWindow : EditorWindow
 
     }
 }
- 
+
+public class ImportFBXField
+{
+    public static string path;
+    public static Object fbxFile;
+
+    public static void DrawUI(string fieldName)
+    {
+        using (new GUILayout.HorizontalScope())
+        {
+            GUILayout.Label(fieldName, GUILayout.Width(145));
+            if (GUILayout.Button("Select FBX", GUILayout.Width(100)))
+            {
+                path = EditorUtility.OpenFilePanel(fieldName, "", "fbx");
+                if (path.Length > 0)
+                {
+
+                }
+            }
+        }
+    }
+}
+
+public class ImportSpriteField
+{
+    public static string path;
+
+    public static void DrawUI(string fieldName)
+    {
+        using (new GUILayout.HorizontalScope())
+        {
+            GUILayout.Label(fieldName, GUILayout.Width(145));
+            if (GUILayout.Button("Select PNG", GUILayout.Width(100)))
+            {
+                path = EditorUtility.OpenFilePanel(fieldName, "", "png");
+                if (path.Length > 0)
+                {
+
+                }
+            }
+        }
+    }
+}
