@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 
 public class CharacterImportWindow : EditorWindow
 {
@@ -10,7 +11,7 @@ public class CharacterImportWindow : EditorWindow
     private GameObject characterModel;
     private Sprite characterSprite;
 
-    [MenuItem("Window/CharacterImport")]
+    [MenuItem("Tools/Character Import")]
     static void ShowWindow()
     {
         GetWindow(typeof(CharacterImportWindow));
@@ -21,7 +22,7 @@ public class CharacterImportWindow : EditorWindow
         characterName = EditorGUILayout.TextField("Character Name", characterName);
         characterPrice = EditorGUILayout.IntField("Character Speed", characterPrice);
         ImportFBXField.DrawUI("Character Model");
-        ImportSpriteField.DrawUI("Character Sprite");
+        ImportSpriteFromPNGField.DrawUI("Character Sprite");
     }
 
     private void OnGUI()
@@ -35,7 +36,7 @@ public class CharacterImportWindow : EditorWindow
 
     private void ImportCharacter()
     {
-
+        ImportSpriteFromPNGField.ImportAsSprite();
     }
 }
 
@@ -52,16 +53,16 @@ public class ImportFBXField
             if (GUILayout.Button("Select FBX", GUILayout.Width(100)))
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", "fbx");
-                if (path.Length > 0)
-                {
-
-                }
             }
         }
     }
+
+    public static void ImportFBXModel()
+    {
+    }
 }
 
-public class ImportSpriteField
+public class ImportSpriteFromPNGField
 {
     public static string path;
 
@@ -73,11 +74,16 @@ public class ImportSpriteField
             if (GUILayout.Button("Select PNG", GUILayout.Width(100)))
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", "png");
-                if (path.Length > 0)
-                {
-
-                }
             }
+        }
+    }
+
+    public static void ImportAsSprite()
+    {
+        if(path.Length > 0)
+        {
+            FileUtil.CopyFileOrDirectory(path, $"Assets/1_Graphics/Store/{Path.GetFileName(path)}");
+            AssetDatabase.Refresh();
         }
     }
 }
