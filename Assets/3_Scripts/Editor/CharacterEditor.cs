@@ -8,7 +8,7 @@ public class CharacterEditor : EditorWindow
     public string status = "Select a GameObject"; 
 
     private bool foldout;
-    private List<Editor> editors = new();
+    private List<Editor> editors = new List<Editor>();   
 
 
     [MenuItem("Tools/Character Editor")]
