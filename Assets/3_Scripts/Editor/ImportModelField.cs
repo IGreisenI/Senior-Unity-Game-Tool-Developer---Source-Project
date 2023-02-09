@@ -17,6 +17,7 @@ public class ImportModelField
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", modelFileExt);
             }
+            GUILayout.Label(Path.GetFileName(path), GUILayout.ExpandWidth(true));
         }
     }
 
