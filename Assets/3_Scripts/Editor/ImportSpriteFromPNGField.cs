@@ -16,12 +16,11 @@ public class ImportSpriteFromPNGField
             if (GUILayout.Button("Select PNG", GUILayout.Width(100)))
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", "png");
-                ImportAsSprite();
             }
         }
     }
 
-    public static Texture2D ImportAsSprite()
+    public static Sprite ImportAsSprite()
     {
         if (!string.IsNullOrEmpty(path))
         {
@@ -37,14 +36,16 @@ public class ImportSpriteFromPNGField
                 importer.textureType = TextureImporterType.Sprite;
 
                 // Save the changes to the texture asset
-                AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+                importer.SaveAndReimport();
             }
             else
             {
                 Debug.LogError($"Texture not found at path: {destinationPath}");
             }
 
-            return (Texture2D)AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Texture2D));
+
+
+            return (Sprite)AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Sprite));
         }
 
         Debug.LogError("Path provided is empty");
