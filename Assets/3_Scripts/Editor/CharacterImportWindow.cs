@@ -19,7 +19,7 @@ public class CharacterImportWindow : EditorWindow
     private void DrawUI()
     {
         characterName = EditorGUILayout.TextField("Character Name", characterName);
-        characterPrice = EditorGUILayout.IntField("Character Speed", characterPrice);
+        characterPrice = EditorGUILayout.IntField("Character Price", characterPrice);
         ImportFBXField.DrawUI("Character Model");
         ImportSpriteFromPNGField.DrawUI("Character Sprite");
     }
@@ -35,7 +35,24 @@ public class CharacterImportWindow : EditorWindow
 
     private void ImportCharacter()
     {
-        ImportFBXField.ImportFBXModel();
-        ImportSpriteFromPNGField.ImportAsSprite();
+        StoreItem storeItem = ScriptableObject.CreateInstance<StoreItem>();
+
+        storeItem.Name = characterName;
+        storeItem.Price = characterPrice;
+
+        storeItem.Icon = ImportSpriteFromPNGField.ImportAsSprite();
+
+        Object model = ImportFBXField.ImportFBXModel();
+        GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(model);
+
+        CapsuleCollider collider = prefab.AddComponent<CapsuleCollider>();
+
+        PrefabUtility.UnpackPrefabInstance(prefab, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
+
+        storeItem.Prefab = PrefabUtility.SaveAsPrefabAsset(prefab, $"Assets/2_Prefabs/{prefab.name}.prefab");
+        DestroyImmediate(prefab.gameObject, false);
+
+        AssetDatabase.CreateAsset(storeItem, $"Assets/4_ScriptableObject/{characterName}SO.asset");
+        AssetDatabase.SaveAssets();
     }
 }
