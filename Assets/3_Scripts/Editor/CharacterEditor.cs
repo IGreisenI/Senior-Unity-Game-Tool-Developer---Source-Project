@@ -3,34 +3,31 @@ using UnityEditor;
 
 public class CharacterEditor : EditorWindow
 {
+    public bool showPosition = true;
+    public string status = "Select a GameObject"; 
+    
+    private string characterName;
+    private int characterPrice;
+
     [MenuItem("Tools/Character Editor")]
     static void ShowWindow()
     {
         GetWindow(typeof(CharacterEditor));
-
-        string[] guids = AssetDatabase.FindAssets("t:" + typeof(StoreItem).Name);
-        StoreItem[] a = new StoreItem[guids.Length];
-        for (int i = 0; i < guids.Length; i++)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            a[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path);
-        }
-
     }
 
     private void DrawUI()
     {
-        using (new GUILayout.VerticalScope())
+        
+        string[] guids = AssetDatabase.FindAssets("t:" + typeof(StoreItem).Name);
+        StoreItem[] a = new StoreItem[guids.Length];
+        for (int i = 0; i < guids.Length; i++)
         {
-            using (new GUILayout.HorizontalScope())
+            string[] path = { AssetDatabase.GUIDToAssetPath(guids[i]) };
+            a[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path[0]);
+            showPosition = EditorGUI.Foldout(new Rect(3, 3, position.width - 6, 15), showPosition, a[i].Name);
+            if (showPosition)
             {
-                string[] guids = AssetDatabase.FindAssets("t:" + typeof(StoreItem).Name);
-                StoreItem[] a = new StoreItem[guids.Length];
-                for (int i = 0; i < guids.Length; i++)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-                    a[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path);
-                }
+                Editor.CreateEditor(a[i]).OnInspectorGUI();
             }
         }
     }
@@ -38,9 +35,10 @@ public class CharacterEditor : EditorWindow
     private void OnGUI()
     {
         DrawUI();
-        if (GUILayout.Button("Edit"))
-        {
+    }
 
-        }
+    void OnInspectorUpdate()
+    {
+        Repaint();
     }
 }
