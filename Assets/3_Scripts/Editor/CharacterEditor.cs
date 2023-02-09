@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 
 public class CharacterEditor : EditorWindow
 {
     public bool showPosition = true;
     public string status = "Select a GameObject"; 
-    
-    private string characterName;
-    private int characterPrice;
+
+    private bool foldout;
+    private List<Editor> editors = new();
+
 
     [MenuItem("Tools/Character Editor")]
     static void ShowWindow()
@@ -17,17 +19,21 @@ public class CharacterEditor : EditorWindow
 
     private void DrawUI()
     {
-        
         string[] guids = AssetDatabase.FindAssets("t:" + typeof(StoreItem).Name);
         StoreItem[] a = new StoreItem[guids.Length];
         for (int i = 0; i < guids.Length; i++)
         {
-            string[] path = { AssetDatabase.GUIDToAssetPath(guids[i]) };
-            a[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path[0]);
-            showPosition = EditorGUI.Foldout(new Rect(3, 3, position.width - 6, 15), showPosition, a[i].Name);
-            if (showPosition)
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            a[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path);
+
+            foldout = EditorGUILayout.Foldout(foldout, a[i].Name);
+            if (foldout)
             {
-                Editor.CreateEditor(a[i]).OnInspectorGUI();
+                if (editors[i] == null)
+                {
+                    editors.Add(Editor.CreateEditor(a[i]));
+                }
+                editors[i].OnInspectorGUI();
             }
         }
     }
@@ -37,8 +43,4 @@ public class CharacterEditor : EditorWindow
         DrawUI();
     }
 
-    void OnInspectorUpdate()
-    {
-        Repaint();
-    }
 }
