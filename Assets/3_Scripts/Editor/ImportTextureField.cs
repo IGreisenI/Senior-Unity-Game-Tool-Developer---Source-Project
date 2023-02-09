@@ -17,6 +17,7 @@ public class ImportTextureField
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", textureFileExt);
             }
+            GUILayout.Label(Path.GetFileName(path), GUILayout.ExpandWidth(true));
         }
     }
 
@@ -35,7 +36,6 @@ public class ImportTextureField
             {
                 importer.textureType = TextureImporterType.Sprite;
 
-                // Save the changes to the texture asset
                 importer.SaveAndReimport();
             }
             else
