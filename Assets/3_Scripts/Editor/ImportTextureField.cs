@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-public class ImportSpriteFromPNGField
+public class ImportTextureField
 {
     public static string path;
 
-    public static void DrawUI(string fieldName)
+    public static void DrawUI(string fieldName, string textureFileExt)
     {
         using (new GUILayout.HorizontalScope())
         {
             GUILayout.Label(fieldName, GUILayout.Width(145));
             if (GUILayout.Button("Select PNG", GUILayout.Width(100)))
             {
-                path = EditorUtility.OpenFilePanel(fieldName, "", "png");
+                path = EditorUtility.OpenFilePanel(fieldName, "", textureFileExt);
             }
         }
     }
@@ -42,8 +42,6 @@ public class ImportSpriteFromPNGField
             {
                 Debug.LogError($"Texture not found at path: {destinationPath}");
             }
-
-
 
             return (Sprite)AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Sprite));
         }

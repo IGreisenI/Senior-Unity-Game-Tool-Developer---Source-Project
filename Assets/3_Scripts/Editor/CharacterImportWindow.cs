@@ -20,8 +20,8 @@ public class CharacterImportWindow : EditorWindow
     {
         characterName = EditorGUILayout.TextField("Character Name", characterName);
         characterPrice = EditorGUILayout.IntField("Character Price", characterPrice);
-        ImportFBXField.DrawUI("Character Model");
-        ImportSpriteFromPNGField.DrawUI("Character Sprite");
+        ImportModelField.DrawUI("Character Model", "fbx");
+        ImportTextureField.DrawUI("Character Sprite", "png");
     }
 
     private void OnGUI()
@@ -40,9 +40,9 @@ public class CharacterImportWindow : EditorWindow
         storeItem.Name = characterName;
         storeItem.Price = characterPrice;
 
-        storeItem.Icon = ImportSpriteFromPNGField.ImportAsSprite();
+        storeItem.Icon = ImportTextureField.ImportAsSprite();
 
-        Object model = ImportFBXField.ImportFBXModel();
+        Object model = ImportModelField.ImportFBXCharacterModel();
         GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(model);
 
         CapsuleCollider collider = prefab.AddComponent<CapsuleCollider>();

@@ -4,23 +4,23 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-public class ImportFBXField
+public class ImportModelField
 {
     public static string path;
 
-    public static void DrawUI(string fieldName)
+    public static void DrawUI(string fieldName, string modelFileExt)
     {
         using (new GUILayout.HorizontalScope())
         {
             GUILayout.Label(fieldName, GUILayout.Width(145));
             if (GUILayout.Button("Select FBX", GUILayout.Width(100)))
             {
-                path = EditorUtility.OpenFilePanel(fieldName, "", "fbx");
+                path = EditorUtility.OpenFilePanel(fieldName, "", modelFileExt);
             }
         }
     }
 
-    public static Object ImportFBXModel()
+    public static Object ImportFBXCharacterModel()
     {
         if (!string.IsNullOrEmpty(path))
         {
