@@ -13,7 +13,7 @@ public class ImportModelField
         using (new GUILayout.HorizontalScope())
         {
             GUILayout.Label(fieldName, GUILayout.Width(145));
-            if (GUILayout.Button("Select FBX", GUILayout.Width(100)))
+            if (GUILayout.Button($"Select {modelFileExt.ToUpper()}", GUILayout.Width(100)))
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", modelFileExt);
             }

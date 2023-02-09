@@ -13,7 +13,7 @@ public class ImportTextureField
         using (new GUILayout.HorizontalScope())
         {
             GUILayout.Label(fieldName, GUILayout.Width(145));
-            if (GUILayout.Button("Select PNG", GUILayout.Width(100)))
+            if (GUILayout.Button($"Select {textureFileExt.ToUpper()}", GUILayout.Width(100)))
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", textureFileExt);
             }
