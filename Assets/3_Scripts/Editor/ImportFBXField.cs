@@ -16,7 +16,6 @@ public class ImportFBXField
             if (GUILayout.Button("Select FBX", GUILayout.Width(100)))
             {
                 path = EditorUtility.OpenFilePanel(fieldName, "", "fbx");
-                ImportFBXModel();
             }
         }
     }
