@@ -24,7 +24,7 @@ public class CharacterEditorWindow : EditorWindow
 
     private List<StoreItemUI> itemUIs = new List<StoreItemUI>();   
 
-    [MenuItem("Tools/Character Editor")]
+    [MenuItem("Tools/Character/Character Editor")]
     static void ShowWindow()
     {
         GetWindow(typeof(CharacterEditorWindow));

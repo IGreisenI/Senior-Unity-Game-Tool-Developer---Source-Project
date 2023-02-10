@@ -10,7 +10,7 @@ public class CharacterImportWindow : EditorWindow
 
     private bool foldout;
 
-    [MenuItem("Tools/Character Import")]
+    [MenuItem("Tools/Character/Character Import")]
     static void ShowWindow()
     {
         GetWindow(typeof(CharacterImportWindow));
