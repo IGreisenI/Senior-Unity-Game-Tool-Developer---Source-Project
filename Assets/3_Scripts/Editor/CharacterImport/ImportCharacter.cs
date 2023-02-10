@@ -47,7 +47,6 @@ public class ImportCharacter : ScriptableObject
         animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
 
         PrefabUtility.UnpackPrefabInstance(prefab, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
-
         storeItem.Prefab = PrefabUtility.SaveAsPrefabAsset(prefab, $"Assets/2_Prefabs/{prefab.name}.prefab");
 
         DestroyImmediate(prefab.gameObject, false);

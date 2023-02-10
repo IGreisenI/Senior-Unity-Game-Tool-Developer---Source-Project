@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46946a2f1a4fb544817824391b8a2d3, type: 3}
   m_Name: ImportCharacterSettings
   m_EditorClassIdentifier: 
-  controller: {fileID: 9100000, guid: 8b9a677f24793ba45bdc27a1dab7745e, type: 2}
+  animatorController: {fileID: 9100000, guid: 8b9a677f24793ba45bdc27a1dab7745e, type: 2}
   colliderRadius: 0.2
   colliderHeight: 1.1

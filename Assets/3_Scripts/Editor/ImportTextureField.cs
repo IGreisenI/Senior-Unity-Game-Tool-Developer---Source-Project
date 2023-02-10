@@ -27,7 +27,8 @@ public class ImportTextureField
         {
             string destinationPath = $"Assets/1_Graphics/Store/{Path.GetFileName(path)}";
 
-            if (!File.Exists(destinationPath)){
+            if (!File.Exists(destinationPath))
+            {
                 FileUtil.CopyFileOrDirectory(path, destinationPath);
             }
             else
