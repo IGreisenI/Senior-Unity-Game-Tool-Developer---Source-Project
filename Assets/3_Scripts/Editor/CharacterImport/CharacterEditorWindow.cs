@@ -18,7 +18,7 @@ public class StoreItemUI
     }
 }
 
-public class CharacterEditor : EditorWindow
+public class CharacterEditorWindow : EditorWindow
 {
     [SerializeField] private ImportCharacter importCharacter;
 
@@ -27,7 +27,7 @@ public class CharacterEditor : EditorWindow
     [MenuItem("Tools/Character Editor")]
     static void ShowWindow()
     {
-        GetWindow(typeof(CharacterEditor));
+        GetWindow(typeof(CharacterEditorWindow));
     }
 
     private void DrawUI()
