@@ -2,14 +2,27 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
+public class StoreItemUI
+{
+    public Editor editor;
+    public bool foldout;
+    public bool reimportSprite;
+    public bool reimportModel;
+
+    public StoreItemUI(Editor editor)
+    {
+        this.editor = editor;
+        foldout = false;
+        reimportSprite = false;
+        reimportModel = false;
+    }
+}
+
 public class CharacterEditor : EditorWindow
 {
-    public bool showPosition = true;
-    public string status = "Select a GameObject"; 
+    [SerializeField] private ImportCharacter importCharacter;
 
-    private bool foldout;
-    private List<Editor> editors = new List<Editor>();   
-
+    private List<StoreItemUI> itemUIs = new List<StoreItemUI>();   
 
     [MenuItem("Tools/Character Editor")]
     static void ShowWindow()
@@ -20,20 +33,56 @@ public class CharacterEditor : EditorWindow
     private void DrawUI()
     {
         string[] guids = AssetDatabase.FindAssets("t:" + typeof(StoreItem).Name);
-        StoreItem[] a = new StoreItem[guids.Length];
+        StoreItem[] storeItems = new StoreItem[guids.Length];
         for (int i = 0; i < guids.Length; i++)
         {
             string path = AssetDatabase.GUIDToAssetPath(guids[i]);
-            a[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path);
+            storeItems[i] = AssetDatabase.LoadAssetAtPath<StoreItem>(path);
 
-            foldout = EditorGUILayout.Foldout(foldout, a[i].Name);
-            if (foldout)
+            if (itemUIs.Count <= i)
             {
-                if (editors[i] == null)
+                itemUIs.Add(new StoreItemUI(Editor.CreateEditor(storeItems[i])));
+            }
+
+            itemUIs[i].foldout = EditorGUILayout.Foldout(itemUIs[i].foldout, storeItems[i].Name);
+            if (itemUIs[i].foldout)
+            {
+                itemUIs[i].editor.OnInspectorGUI();
+
+                using (new GUILayout.HorizontalScope())
                 {
-                    editors.Add(Editor.CreateEditor(a[i]));
+                    GUILayout.Label("Reimport Char Model", GUILayout.Width(145));
+                    itemUIs[i].reimportModel = GUILayout.Toggle(itemUIs[i].reimportModel, "");
                 }
-                editors[i].OnInspectorGUI();
+                if (itemUIs[i].reimportModel)
+                {
+                    ImportModelField.DrawUI("Import Model", "fbx");
+                }
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label("Reimport Char Sprite", GUILayout.Width(145));
+                    itemUIs[i].reimportSprite = GUILayout.Toggle(itemUIs[i].reimportSprite, "");
+                }
+                if (itemUIs[i].reimportSprite)
+                {
+                    ImportTextureField.DrawUI("Import Sprite", "png");
+                }
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Save"))
+                    {
+                        if (itemUIs[i].reimportModel)
+                            importCharacter.ReimportModel(storeItems[i], ImportModelField.ImportFBXCharacterModel());
+                        if (itemUIs[i].reimportSprite)
+                            importCharacter.ReimportTexture(storeItems[i], ImportTextureField.ImportAsSprite());
+                    }
+                    if (GUILayout.Button("Remove"))
+                    {
+                        importCharacter.RemoveCharacter(storeItems[i]);
+                    }
+                }
             }
         }
     }
