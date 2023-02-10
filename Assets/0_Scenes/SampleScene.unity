@@ -153,7 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StoreItems:
-  - {fileID: 11400000, guid: 5b5d549eb6d27f646a85a0816b36f6c2, type: 2}
+  - {fileID: 11400000, guid: 2afbe24addc54cd4a896751846dc7261, type: 2}
+  - {fileID: 11400000, guid: fb4040558c0b5fe49a4a34b7a5df4b7c, type: 2}
 --- !u!4 &40247147
 Transform:
   m_ObjectHideFlags: 0
