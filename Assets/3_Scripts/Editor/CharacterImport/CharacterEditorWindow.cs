@@ -34,6 +34,7 @@ public class CharacterEditorWindow : EditorWindow
     {
         string[] guids = AssetDatabase.FindAssets("t:" + typeof(StoreItem).Name);
         StoreItem[] storeItems = new StoreItem[guids.Length];
+
         for (int i = 0; i < guids.Length; i++)
         {
             string path = AssetDatabase.GUIDToAssetPath(guids[i]);
@@ -47,42 +48,50 @@ public class CharacterEditorWindow : EditorWindow
             itemUIs[i].foldout = EditorGUILayout.Foldout(itemUIs[i].foldout, storeItems[i].Name);
             if (itemUIs[i].foldout)
             {
-                itemUIs[i].editor.OnInspectorGUI();
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox, GUILayout.ExpandWidth(true)))
+                {
+                    Foldout(itemUIs[i], storeItems[i]);
+                }
+            }
+        }
+    }
 
-                using (new GUILayout.HorizontalScope())
-                {
-                    GUILayout.Label("Reimport Char Model", GUILayout.Width(145));
-                    itemUIs[i].reimportModel = GUILayout.Toggle(itemUIs[i].reimportModel, "");
-                }
-                if (itemUIs[i].reimportModel)
-                {
-                    ImportModelField.DrawUI("Import Model", "fbx");
-                }
+    private void Foldout(StoreItemUI itemUI, StoreItem storeItem)
+    {
+        itemUI.editor.OnInspectorGUI();
 
-                using (new GUILayout.HorizontalScope())
-                {
-                    GUILayout.Label("Reimport Char Sprite", GUILayout.Width(145));
-                    itemUIs[i].reimportSprite = GUILayout.Toggle(itemUIs[i].reimportSprite, "");
-                }
-                if (itemUIs[i].reimportSprite)
-                {
-                    ImportTextureField.DrawUI("Import Sprite", "png");
-                }
+        using (new GUILayout.HorizontalScope())
+        {
+            GUILayout.Label("Reimport Char Model", GUILayout.Width(145));
+            itemUI.reimportModel = GUILayout.Toggle(itemUI.reimportModel, "");
+        }
+        if (itemUI.reimportModel)
+        {
+            ImportModelField.DrawUI("Import Model", "fbx");
+        }
 
-                using (new GUILayout.HorizontalScope())
-                {
-                    if (GUILayout.Button("Save"))
-                    {
-                        if (itemUIs[i].reimportModel)
-                            importCharacter.ReimportModel(storeItems[i], ImportModelField.ImportFBXCharacterModel());
-                        if (itemUIs[i].reimportSprite)
-                            importCharacter.ReimportTexture(storeItems[i], ImportTextureField.ImportAsSprite());
-                    }
-                    if (GUILayout.Button("Remove"))
-                    {
-                        importCharacter.RemoveCharacter(storeItems[i]);
-                    }
-                }
+        using (new GUILayout.HorizontalScope())
+        {
+            GUILayout.Label("Reimport Char Sprite", GUILayout.Width(145));
+            itemUI.reimportSprite = GUILayout.Toggle(itemUI.reimportSprite, "");
+        }
+        if (itemUI.reimportSprite)
+        {
+            ImportTextureField.DrawUI("Import Sprite", "png");
+        }
+
+        using (new GUILayout.HorizontalScope())
+        {
+            if (GUILayout.Button("Save"))
+            {
+                if (itemUI.reimportModel)
+                    importCharacter.ReimportModel(storeItem, ImportModelField.ImportFBXCharacterModel());
+                if (itemUI.reimportSprite)
+                    importCharacter.ReimportTexture(storeItem, ImportTextureField.ImportAsSprite());
+            }
+            if (GUILayout.Button("Remove"))
+            {
+                importCharacter.RemoveCharacter(storeItem);
             }
         }
     }
