@@ -36,12 +36,15 @@ public class ImportCharacter : ScriptableObject
         }
 
         GameObject prefab = (GameObject)PrefabUtility.InstantiatePrefab(model);
+
         CapsuleCollider collider = prefab.AddComponent<CapsuleCollider>();
         collider.radius = colliderRadius;
         collider.height = colliderHeight;
-        prefab.GetComponent<Animator>().runtimeAnimatorController = animatorController;
-        prefab.GetComponent<Animator>().applyRootMotion = false;
-        prefab.GetComponent<Animator>().cullingMode = AnimatorCullingMode.AlwaysAnimate;
+
+        Animator animator = prefab.GetComponent<Animator>();
+        animator.runtimeAnimatorController = animatorController;
+        animator.applyRootMotion = false;
+        animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
 
         PrefabUtility.UnpackPrefabInstance(prefab, PrefabUnpackMode.OutermostRoot, InteractionMode.AutomatedAction);
 
