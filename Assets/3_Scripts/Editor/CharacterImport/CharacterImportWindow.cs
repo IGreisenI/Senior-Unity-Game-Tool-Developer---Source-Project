@@ -18,6 +18,7 @@ public class CharacterImportWindow : EditorWindow
 
     private void DrawUI()
     {
+        // Fields for character details
         characterName = EditorGUILayout.TextField("Character Name", characterName);
         characterPrice = EditorGUILayout.IntField("Character Price", characterPrice);
         ImportModelField.DrawUI("Character Model", "fbx");
@@ -35,6 +36,7 @@ public class CharacterImportWindow : EditorWindow
         DrawUI();
         if (GUILayout.Button("Import"))
         {
+            // Create a StoreItem and a prefab for the character.
             importCharacterSettings.CreateStoreItem(characterName, characterPrice, ImportModelField.ImportFBXCharacterModel(), ImportTextureField.ImportAsSprite());
         }
     }

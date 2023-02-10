@@ -13,22 +13,26 @@ public class ImportCharacter : ScriptableObject
 
     public void CreateStoreItem(string characterName, int characterPrice, Object model, Sprite icon)
     {
+        // Create an instance of the StoreItem scriptable object
         StoreItem storeItem = ScriptableObject.CreateInstance<StoreItem>();
         storeItem.Id = AssetDatabase.FindAssets("t:" + typeof(StoreItem)).Length;
         storeItem.Name = characterName;
         storeItem.Price = characterPrice;
         storeItem.Icon = icon;
 
+        // Create an asset for the store item in the project's asset database
         AssetDatabase.CreateAsset(storeItem, $"Assets/4_ScriptableObject/{characterName}SO.asset");
         AssetDatabase.SaveAssets();
 
         CreatePrefabForCharacter(storeItem, model);
 
+        // Add the store item to the store
         Store.Instance.StoreItems.Add(storeItem);
     }
 
     private void CreatePrefabForCharacter(StoreItem storeItem, Object model)
     {
+        // Delete prefab if it exists so a new one can be created from the model.
         if (storeItem.Prefab)
         {
             AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(storeItem.Prefab));
