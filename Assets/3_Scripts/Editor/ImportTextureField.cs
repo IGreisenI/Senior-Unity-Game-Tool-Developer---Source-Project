@@ -8,6 +8,11 @@ public class ImportTextureField
 {
     public static string path;
 
+    /// <summary>
+    /// Draws import button with a label for the button and field to show selected files name
+    /// </summary>
+    /// <param name="fieldName"></param>
+    /// <param name="textureFileExt"></param>
     public static void DrawUI(string fieldName, string textureFileExt)
     {
         using (new GUILayout.HorizontalScope())
@@ -23,14 +28,15 @@ public class ImportTextureField
 
     public static Sprite ImportAsSprite()
     {
+        // If no path was selected return null
         if (string.IsNullOrEmpty(path))
         {
             Debug.LogError("Path provided is empty");
             return null;
         }
 
+        // Copy the selected file if it doesn't exist already
         string destinationPath = $"Assets/1_Graphics/Store/{Path.GetFileName(path)}";
-
         if (!File.Exists(destinationPath))
         {
             FileUtil.CopyFileOrDirectory(path, destinationPath);
@@ -41,8 +47,8 @@ public class ImportTextureField
         }
         AssetDatabase.Refresh();
 
+        // Import texture as a sprite and optimise for mobile devices
         TextureImporter importer = AssetImporter.GetAtPath(destinationPath) as TextureImporter;
-
         if (importer != null)
         {
             importer.textureType = TextureImporterType.Sprite;
@@ -56,6 +62,7 @@ public class ImportTextureField
             Debug.LogError($"Texture not found at path: {destinationPath}");
         }
 
+        // Return the imported Texture as a Sprite
         return (Sprite)AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Sprite));
     }
 

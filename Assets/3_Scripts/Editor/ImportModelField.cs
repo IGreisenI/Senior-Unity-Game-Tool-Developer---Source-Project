@@ -8,6 +8,11 @@ public class ImportModelField
 {
     public static string path;
 
+    /// <summary>
+    /// Draws import button with a label for the button and field to show selected files name
+    /// </summary>
+    /// <param name="fieldName"></param>
+    /// <param name="modelFileExt"></param>
     public static void DrawUI(string fieldName, string modelFileExt)
     {
         using (new GUILayout.HorizontalScope())
@@ -23,14 +28,15 @@ public class ImportModelField
 
     public static Object ImportFBXCharacterModel()
     {
+        // If no path was selected return null
         if (string.IsNullOrEmpty(path))
         {
             Debug.LogError("Path provided is empty");
             return null;
         }
 
+        // Copy the selected file if it doesn't exist already
         string destinationPath = $"Assets/1_Graphics/Models/{Path.GetFileName(path)}";
-
         if (!File.Exists(destinationPath))
         {
             FileUtil.CopyFileOrDirectory(path, destinationPath);
@@ -41,8 +47,8 @@ public class ImportModelField
         }
         AssetDatabase.Refresh();
 
+        // Import texture as a sprite and optimise for mobile devices
         ModelImporter importer = AssetImporter.GetAtPath(destinationPath) as ModelImporter;
-
         if (importer != null)
         {
             OptimiseModelForMobile(importer);
@@ -52,6 +58,7 @@ public class ImportModelField
             Debug.LogError($"Texture not found at path: {destinationPath}");
         }
 
+        // Return the imported Model
         return AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Object));
     }
 
