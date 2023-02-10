@@ -27,7 +27,13 @@ public class ImportTextureField
         {
             string destinationPath = $"Assets/1_Graphics/Store/{Path.GetFileName(path)}";
 
-            FileUtil.CopyFileOrDirectory(path, destinationPath);
+            if (!File.Exists(destinationPath)){
+                FileUtil.CopyFileOrDirectory(path, destinationPath);
+            }
+            else
+            {
+                Debug.LogWarning($"File {destinationPath} already imported");
+            }
             AssetDatabase.Refresh();
 
             TextureImporter importer = AssetImporter.GetAtPath(destinationPath) as TextureImporter;
@@ -36,6 +42,8 @@ public class ImportTextureField
             {
                 importer.textureType = TextureImporterType.Sprite;
 
+                OptimiseTetureForMobile(importer);
+                
                 importer.SaveAndReimport();
             }
             else
@@ -48,5 +56,13 @@ public class ImportTextureField
 
         Debug.LogError("Path provided is empty");
         return null;
+    }
+
+    public static TextureImporter OptimiseTetureForMobile(TextureImporter importer)
+    {
+        importer.maxTextureSize = 512;
+        importer.textureCompression = TextureImporterCompression.Compressed;
+        importer.SaveAndReimport();
+        return importer;
     }
 }
