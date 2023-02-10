@@ -23,36 +23,36 @@ public class ImportModelField
 
     public static Object ImportFBXCharacterModel()
     {
-        if (!string.IsNullOrEmpty(path))
+        if (string.IsNullOrEmpty(path))
         {
-            string destinationPath = $"Assets/1_Graphics/Models/{Path.GetFileName(path)}";
-            
-            if (!File.Exists(destinationPath))
-            {
-                FileUtil.CopyFileOrDirectory(path, destinationPath);
-            }
-            else
-            {
-                Debug.LogWarning($"File {destinationPath} already imported");
-            }
-            AssetDatabase.Refresh();
-
-            ModelImporter importer = AssetImporter.GetAtPath(destinationPath) as ModelImporter;
-
-            if (importer != null)
-            {
-                OptimiseModelForMobile(importer);
-            }
-            else
-            {
-                Debug.LogError($"Texture not found at path: {destinationPath}");
-            }
-
-            return AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Object));
+            Debug.LogError("Path provided is empty");
+            return null;
         }
 
-        Debug.LogError("Path provided is empty");
-        return null;
+        string destinationPath = $"Assets/1_Graphics/Models/{Path.GetFileName(path)}";
+
+        if (!File.Exists(destinationPath))
+        {
+            FileUtil.CopyFileOrDirectory(path, destinationPath);
+        }
+        else
+        {
+            Debug.LogWarning($"File {destinationPath} already imported");
+        }
+        AssetDatabase.Refresh();
+
+        ModelImporter importer = AssetImporter.GetAtPath(destinationPath) as ModelImporter;
+
+        if (importer != null)
+        {
+            OptimiseModelForMobile(importer);
+        }
+        else
+        {
+            Debug.LogError($"Texture not found at path: {destinationPath}");
+        }
+
+        return AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Object));
     }
 
     private static ModelImporter OptimiseModelForMobile(ModelImporter importer)

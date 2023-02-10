@@ -23,40 +23,40 @@ public class ImportTextureField
 
     public static Sprite ImportAsSprite()
     {
-        if (!string.IsNullOrEmpty(path))
+        if (string.IsNullOrEmpty(path))
         {
-            string destinationPath = $"Assets/1_Graphics/Store/{Path.GetFileName(path)}";
-
-            if (!File.Exists(destinationPath))
-            {
-                FileUtil.CopyFileOrDirectory(path, destinationPath);
-            }
-            else
-            {
-                Debug.LogWarning($"File {destinationPath} already imported");
-            }
-            AssetDatabase.Refresh();
-
-            TextureImporter importer = AssetImporter.GetAtPath(destinationPath) as TextureImporter;
-
-            if (importer != null)
-            {
-                importer.textureType = TextureImporterType.Sprite;
-
-                OptimiseTetureForMobile(importer);
-                
-                importer.SaveAndReimport();
-            }
-            else
-            {
-                Debug.LogError($"Texture not found at path: {destinationPath}");
-            }
-
-            return (Sprite)AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Sprite));
+            Debug.LogError("Path provided is empty");
+            return null;
         }
 
-        Debug.LogError("Path provided is empty");
-        return null;
+        string destinationPath = $"Assets/1_Graphics/Store/{Path.GetFileName(path)}";
+
+        if (!File.Exists(destinationPath))
+        {
+            FileUtil.CopyFileOrDirectory(path, destinationPath);
+        }
+        else
+        {
+            Debug.LogWarning($"File {destinationPath} already imported");
+        }
+        AssetDatabase.Refresh();
+
+        TextureImporter importer = AssetImporter.GetAtPath(destinationPath) as TextureImporter;
+
+        if (importer != null)
+        {
+            importer.textureType = TextureImporterType.Sprite;
+
+            OptimiseTetureForMobile(importer);
+                
+            importer.SaveAndReimport();
+        }
+        else
+        {
+            Debug.LogError($"Texture not found at path: {destinationPath}");
+        }
+
+        return (Sprite)AssetDatabase.LoadAssetAtPath(destinationPath, typeof(Sprite));
     }
 
     public static TextureImporter OptimiseTetureForMobile(TextureImporter importer)
